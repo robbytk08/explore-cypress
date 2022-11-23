@@ -14,4 +14,4 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
       - run: |
           npm install
-          npx cypress run
+          npm run cypress:execution
