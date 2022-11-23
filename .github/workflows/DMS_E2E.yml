@@ -13,6 +13,5 @@ jobs:
 
       - uses: browser-actions/setup-chrome@latest
       - run: |
-          export CYPRESS_PROJECT_ID="vdh9ai"
-          npm install -f
+          npm install
           npx cypress run
