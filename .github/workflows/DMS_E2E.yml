@@ -1,0 +1,18 @@
+name: DMS E2E Test
+
+on:
+  workflow_dispatch:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: E2E DMS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: browser-actions/setup-chrome@latest
+      - run: |
+          export CYPRESS_PROJECT_ID="vdh9ai"
+          npm install -f
+          npx cypress run
