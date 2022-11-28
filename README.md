@@ -1,19 +1,29 @@
-## cypress-cucumber-test
+# bravo-dms-automation
+ Project contains test scripts for Restful APIs in
+ 
+    - Master Service
+    - Agent Service
+    - Product Service
+    - Asset Pricing Service
+    - Branch Service
+    - Document Service
 
-## **Prerequisites**
+## 1. Project Installation
+### 1.1 Tools
+- NodeJS
+- Visual Studio Code / IntelliJ
 
-Before you continue, ensure you meet the following requirements:
+### 1.2 Set up
+- Clone source code at: https://github.com/bfi-finance/bravo-dms-automation
+- Open terminal at `root` level
+- Run `npm install` to insall all libraries defined in `package.json`
 
-* Visual Code: https://code.visualstudio.com/
-* Install VS code extension: [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/_apis/public/gallery/publishers/alexkrechik/vsextensions/cucumberautocomplete/2.15.2/vspackage)
-* Latest nodejs:  [NodeJS Pages](https://nodejs.org/en/download/)
-* Latest npm: ```npm install -g npm```
-* Install dependency at current working directory: ```npm install```
+## 2. Install new library
+- `npm install` **package_name**
 
-## Execute cli by using terminal:
+## 3. Project configuration
+Defined in `cypress.config.js`:
 
-### To run all test cases
-```
-- Headed: npx cypress run -e isCliRun=true --headed -b chrome 
-- Headless: npx cypress run -e isCliRun=true -b chrome 
-```
+- ***projectId***: projectId to integrate with Cypress Dashboard
+- ***reporterOptions***: report configuration in HTLM/JSON
+- ***e2e***: configuration for `e2e` test

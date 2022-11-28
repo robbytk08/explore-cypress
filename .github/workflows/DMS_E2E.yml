@@ -14,4 +14,4 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
       - run: |
           npm install
-          npm run cypress:execution --spec cypress/e2e/feature/duckduckgo.feature
+          npx cypress run

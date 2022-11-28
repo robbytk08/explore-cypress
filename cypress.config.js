@@ -1,33 +1,51 @@
 const { defineConfig } = require("cypress");
-const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
-const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
-const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild");
-const allureWriter = require("@shelex/cypress-allure-plugin/writer");
+const fs = require('fs-extra')
+const path = require('path')
 
-async function setupNodeEvents(on, config) {
-  // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
-  await preprocessor.addCucumberPreprocessorPlugin(on, config);
-
-  on(
-    "file:preprocessor",
-    createBundler({
-      plugins: [createEsbuildPlugin.default(config)],
-    })
-  );
-  allureWriter(on, config);
-
-  // Make sure to return the config object as it might have been modified by the plugin.
-  return config;
+function getConfigurationFile(env) {
+  const configFile = path.resolve('cypress/config', `${env}.json`)
+  return fs.readJson(configFile);
 }
 
 module.exports = defineConfig({
+  projectId: "hj7mtc",
+  reporter: 'mochawesome',
+  reporterOptions: {
+    showHooks: 'always',
+    reportDir: './cypress/reports',
+    timestamp: "ddmmyyyy_HHMMss",
+    reportFilename: "[name]",
+    overwrite: false,
+    html: true,
+    json: false
+  },
   e2e: {
-    setupNodeEvents,
-    specPattern: "cypress/e2e/features/*.feature",
-    baseUrl: "https://www.saucedemo.com",
-    chromeWebSecurity: false,
+    // specPattern: 'cypress/e2e/**/*.cy.js'
+    supportFile: 'cypress/support/e2e.js',
     env: {
-      allureReuseAfterSpec: true,
+      ENVIRONMENT: 'sit',
+      printLogsToConsole: 'always',//'onFail' // 'always' // 'never';
+      printLogsToFile: 'never',//'onFail' // 'always' // 'never';
+      logToFilesOnAfterRun: false,
+      trashAssetsBeforeRuns: true
+    },
+
+    setupNodeEvents(on, config) {
+      const options = {
+        outputRoot: config.projectRoot + '/cypress/',
+        specRoot: 'cypress/e2e',
+        outputTarget: {
+          'logs|txt': 'txt',
+          // 'logs|json': 'json',
+        }
+      }
+      const file = config.env.ENVIRONMENT || 'dev'
+
+      options.printLogsToConsole = config.env.printLogsToConsole
+      options.printLogsToFile = config.env.printLogsToFile
+      require('cypress-terminal-report/src/installLogsPrinter')(on, options)
+
+      return config && getConfigurationFile(file)
     },
   },
-});
+})
